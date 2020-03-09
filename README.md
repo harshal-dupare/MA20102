@@ -1,4 +1,4 @@
-<center> # NSOPDE
+# <center>  NSOPDE
  
 _____________________________________________________________________________
  MA20102 : Numerical Solution of Ordinary and Partial Differential Equations 
