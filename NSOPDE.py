@@ -1,7 +1,17 @@
 import numpy as np
 
-# Euler Forward Method
+
+
 def EFM(n,F,y_init,limit=[0,1]):
+    """
+    Euler Forward method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -16,22 +26,49 @@ def EFM(n,F,y_init,limit=[0,1]):
     return Y
 
 
-# Newton Raphson Method
-def NR(F,dF,x_init,eplison,max_itt=50):
+
+def NR(F,dF,x_init,epsilon,max_itter=50):
+    """
+    Newton Raphson Method for solving for x in 
+    
+    F(x) = 0
+
+    F : F(x) takes 1 input as x and then outputs the value
+    dF : dF(x)/dx, derivative wrt x of F
+    x_init : initial guess of x
+    eplsion : accuracy of answer
+    max_itter : maximum times to itterate if answer never reaches the accuracy
+    """
+
     
     x_new=x_init
     
-    while max_itt > 0 :
+    while max_itter > 0 :
         x_old=x_new
         x_new = x_old - F(x_old)/(dF(x_old))
-        max_itt-=1
-        if abs(x_old-x_new) < eplison : break
+        max_itter-=1
+        if abs(x_old-x_new) < epsilon : break
             
     return x_new
     
 
- # Euler Backward Method
-def EBM(n,F,dFy,y_init,eplison,max_itter=50,limit=[0,1]):
+def EBM(n,F,dFy,y_init,epsilon,max_itter=50,limit=[0,1]):
+    """
+    Euler Backward method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    dFy : dF(x,y)/dy, partial derivative wrt y of F
+    y_init = initial value at point x=a
+    limit : [a,b], region on x to solve the equation for
+    eplsion : accuracy of answer
+    max_itter : maximum times to itterate if answer never reaches the accuracy
+
+    uses newton raphson method to solve for next step value
+    """
+
+
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -42,19 +79,26 @@ def EBM(n,F,dFy,y_init,eplison,max_itter=50,limit=[0,1]):
     for i in range(n-1):
         x_i=a+i*h
         y_new=Y[i]
-        max_itt=max_itter
-        while max_itt > 0 :
+
+        while max_itter > 0 :
             y_old=y_new
             y_new = y_old - (y_old-h*F(x_i,y_old)-Y[i])/(1-h*dFy(x_i,y_old))
-            max_itt-=1
-            if abs(y_old-y_new) < eplison : break
+            max_itter-=1
+            if abs(y_old-y_new) < epsilon : break
         Y.append(y_new)
     
     return Y
 
-
-# Modified Euler Method
 def MEM(n,F,y_init,limit=[0,1]):
+    """
+    Modified Euler method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -73,9 +117,16 @@ def MEM(n,F,y_init,limit=[0,1]):
 
 
 
-# Euler Cauchy Method
-# Hune Method
 def ECM(n,F,y_init,limit=[0,1]):
+    """
+    Euler Cauchy Method or Hune Method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -93,8 +144,17 @@ def ECM(n,F,y_init,limit=[0,1]):
     return Y
 
 
-# RK method of thita
 def RK(n,F,y_init,thita=0.5,limit=[0,1]):
+    """
+    Ranga Kutta method of thita for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    thita : thita parameter
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -116,7 +176,17 @@ def RK(n,F,y_init,thita=0.5,limit=[0,1]):
 
 
 # general 2nd order method
-def General_order2(n,F,y_init,aplha=0.5,limit=[0,1]):
+def General_order2(n,F,y_init,alpha=0.5,limit=[0,1]):
+    """
+    General 2nd Order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -140,6 +210,16 @@ def General_order2(n,F,y_init,aplha=0.5,limit=[0,1]):
 
 # Nystrom 3rd order
 def Nystrom(n,F,y_init,limit=[0,1]):
+    """
+    Nystrom 3rd order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -159,8 +239,17 @@ def Nystrom(n,F,y_init,limit=[0,1]):
 
 
 
-# Hune 3rd order method
 def Hune(n,F,y_init,limit=[0,1]):
+    """
+    Hune 3rd order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -180,9 +269,17 @@ def Hune(n,F,y_init,limit=[0,1]):
 
 
 
-
-# Classical 3rd Order method
 def Classical_order3(n,F,y_init,limit=[0,1]):
+    """
+    Classical 3rd Order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -202,9 +299,17 @@ def Classical_order3(n,F,y_init,limit=[0,1]):
 
 
 
-
-# Nearly optimal 3rd Order method
 def Nearly_optimal(n,F,y_init,limit=[0,1]):
+    """
+    Nearly optimal 3rd Order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -223,9 +328,17 @@ def Nearly_optimal(n,F,y_init,limit=[0,1]):
     return Y
 
 
-
-# Kutta Method 4th order
 def Kutta_order4(n,F,y_init,limit=[0,1]):
+    """
+    Kutta Method 4th order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -244,9 +357,17 @@ def Kutta_order4(n,F,y_init,limit=[0,1]):
     
     return Y
 
-
-# Classical 4rd Order method
 def Classical_order4(n,F,y_init,limit=[0,1]):
+    """
+    Classical 4rd Order method for solution of 
+    y' = F(x,y)
+
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
@@ -265,15 +386,36 @@ def Classical_order4(n,F,y_init,limit=[0,1]):
     
     return Y
 
+def General_Explicit(order,W,A,n,F,y_init,limit=[0,1],C=None):
+    """
+    General Explicit Ranga Kutta method for solution of 
+    y' = F(x,y)
 
-# General Explicit method
-
-def gen(order,W,A,n,F,y_init,limit=[0,1]):
+    order : order of method say m
+    W = weight numpy Array for, y_n+1 = y_n + ( w1*k1 + w2*k2.....+ wm*km ), here W = [w1,w2..,wm]
+    A = weight numpy matrix Matrix for, ki = h*F(x_n + ci*h,y_n + ( a_{i,i}*k1 + a_{i,2}*k2 + ...+ a_{i,i-1}*k_i-1 )) for i = 0...m, h is step size = (b-a/n)
+        note values beyound i-1 are all supposed to be zero for Explicit method
+    n : number of steps
+    F : F(x,y) takes 2 input as x and y then outputs the value for this equation
+    y_init = initial value at point x=a
+    alpha : alpha parameter from range [0,1]
+    limit : [a,b], region on x to solve the equation for
+    C : weight numpy Array [c1,c2...c], usually ci = a_{i,1}+ a_{i,2}+..+  a_{i,i-1}
+        this can be changed with help of this input
+    """
     a=limit[0]
     b=limit[1]
     h=(b-a)/n
     Y=[]
     Y.append(y_init)
+
+    A=np.asarray(A)
+    W=np.asarray(W)
+    if C!=None:
+        C=np.asarray(C)
+    else:
+        C=np.sum(A,axis=1)
+        print(C)
     
     for i in range(n-1):
         x_i=a+i*h
@@ -281,28 +423,28 @@ def gen(order,W,A,n,F,y_init,limit=[0,1]):
         
         k=np.zeros(order)
         for j in range(order):
-            k[j]=h*F(x_i+h*A[j].sum(),y_new+(A[j]*k).sum())
+            k[j]=h*F(x_i+h*C[j],y_new+(A[j]*k).sum())
             
         Y.append(y_new+(W*k).sum())
     
     return Y
 
-def NR_solver(F,dyF,x_init,y_init,eplison=1e-4,max_itt=50):
+def NR_solver(F,dyF,x_init,y_init,epsilon=1e-4,max_itter=50):
 
     y_new = y_init
     
-    while max_itt > 0:
+    while max_itter > 0:
         y_old=y_new
         y_new = y_old - (F(x=x_init,y=y_old)/dyF(x=x_init,y=y_old))
         
-        if abs(y_old-y_new) < eplison: break
+        if abs(y_old-y_new) < epsilon: break
             
-        max_itt-=1
+        max_itter-=1
     
     return y_new
 
 
-def implicit_rk2(n,F,dyF,y_init,limit=[0,1],eplison=1e-4,max_itt=50):
+def implicit_rk2(n,F,dyF,y_init,limit=[0,1],epsilon=1e-4,max_itter=50):
     a=limit[0]
     b=limit[1]
     step=(b-a)/n
@@ -315,14 +457,14 @@ def implicit_rk2(n,F,dyF,y_init,limit=[0,1],eplison=1e-4,max_itt=50):
         y_i=Y[i]
                 
         k_new = step*F(x=x_i,y=y_i)
-        max_ittr=max_itt
-        while max_ittr > 0:
+
+        while max_itter > 0:
             k_old=k_new
             k_new = k_old - (k_old-step*F(x=x_i+(1/2)*step,y=y_i+(1/2)*k_old)/(1-step*dyF(x=x_i+(1/2)*step,y=y_i+(1/2)*k_old)))
 
-            if abs(k_old-k_new) < eplison: break
+            if abs(k_old-k_new) < epsilon: break
             
-            max_ittr-=1
+            max_itter-=1
             
         Y.append(y_i+k_new)
     
@@ -332,7 +474,8 @@ def implicit_rk2(n,F,dyF,y_init,limit=[0,1],eplison=1e-4,max_itt=50):
 
 # Implicit 4th order RK method
 # not using vectorized Newton raphson method, insted updating k1,k2 togther by single Newton raphson on each
-def implicit_rk4(n,F,dyF,y_init,limit=[0,1],eplison=1e-4,max_itt=50):
+# an issue can be added to add vectorized NR method and with it it can be solved
+def implicit_rk4(n,F,dyF,y_init,limit=[0,1],epsilon=1e-4,max_itter=50):
     a=limit[0]
     b=limit[1]
     step=(b-a)/n
@@ -347,32 +490,271 @@ def implicit_rk4(n,F,dyF,y_init,limit=[0,1],eplison=1e-4,max_itt=50):
         
         temp=step*F(x=x_i,y=y_i)
         k1_new,k2_new = step*F(x=x_i+alpha*step,y=y_i+alpha*temp),step*F(x=x_i+(1-alpha)*step,y=y_i+(1-alpha)*temp)
-        max_ittr=max_itt
-        while max_ittr > 0:
+
+        while max_itter > 0:
             k1_old,k2_old=k1_new,k2_new
             k1_new = k1_old - (k1_old-step*F(x=x_i+(alpha)*step,y=y_i+(0.25)*k1_old+(alpha-0.25)*k2_old)/(1-step*dyF(x=x_i+(alpha)*step,y=y_i+(0.25)*k1_old+(alpha-0.25)*k2_old)))
             k2_new = k2_old - (k2_old-step*F(x=x_i+(1-alpha)*step,y=y_i+(0.25)*k2_old+(0.75-alpha)*k1_old)/(1-step*dyF(x=x_i+(1-alpha)*step,y=y_i+(0.25)*k2_old+(0.75-alpha)*k1_old)))
             
-            if abs(k1_old-k1_new)  + abs(k2_old-k2_new) < eplison: break
+            if abs(k1_old-k1_new)  + abs(k2_old-k2_new) < epsilon: break
             
-            max_ittr-=1
+            max_itter-=1
             
         Y.append(y_i+(k1_new+k2_new)/2)
     
     return Y
         
+def factorial(n):
+
+    fact = 1
+    while n > 0:
+        fact*=n
+        n-=1
+
+    return fact
+
+def binomial_coeff(n,k):
+    if k == 0:
+        return 1
+    b = factorial(n)/(factorial(k)*factorial(n-k))
+
+    return b
+
+def forward_diff(F,x_init,y_list,y_init_idx,step=0.1,power=1):
+    d=0
+
+    if (y_init_idx + power+1) > len(y_list):
+        print("Error: y_list must have sufficient point values to compute "+str(power)+" differences\n")
+    for i in range(power+1):
+        d+=(((i+1)%2)-1)*binomial_coeff(power,i)*F(x=x_init+step*i,y=y_list[y_init_idx+i])
+    
+    return d
+
+def backward_diff(F,x_init,y_list,y_init_idx,step=0.1,power=1):
+    d=0
+
+    if y_init_idx < power :
+        print("Error: y_list must have sufficient point values to compute "+str(power)+" differences\n")
+    for i in range(power+1):
+        d+=(((i+1)%2)-1)*binomial_coeff(power,i)*F(x=x_init-step*i,y=y_list[y_init_idx-i])
+    
+    return d
+
+def Adam_Bashford(n,F,y_list,limit=[0,1],order=1):
+    x_init=limit[0]
+    a=limit[0]
+    b=limit[1]
+    step=(b-a)/n
+
+    ## somehow we get the coefficients with each backward diff power
+    coeff = [1,1/2,5/12,3/8,251/720]
+
+    for i in range(n-1):
+        net=0
+        for j in range(order):
+            net+=coeff[j]*backward_diff(F,x_init+i*step,y_list,y_init_idx=len(y_list)-1,step=step,power=j)
+        y_list.append(y_list[-1]+step*net)
+    
+    return y_list
+
+
+## need to check
+def Adam_Moulton(n,F,y_list,limit=[0,1],order=1):
+    x_init=limit[0]
+    a=limit[0]
+    b=limit[1]
+    step=(b-a)/n
+
+    ## somehow we get the coefficients with each backward diff power
+    coeff = [1,-1/2,-1/12,-1/24,-19/720]
+
+    for i in range(n-1):
+        net=0
+        for j in range(order):
+            net+=coeff[j]*backward_diff(F,x_init+i*step,y_list,y_init_idx=len(y_list)-1,step=step,power=j)
+        y_list.append(y_list[-1]+step*net)
+    
+    return y_list
+
+ 
+## need to check !! major check
+## IMPLICIT METHOD need to solve by NR method after forming the equation
+def Milne_Simpson(n,F,dFy,y_list,epsilon,max_itter=50,limit=[0,1],order=1):
+    x_init=limit[0]
+    a=limit[0]
+    b=limit[1]
+    step=(b-a)/n
+
+    ## somehow we get the coefficients with each f_i term for each order
+    coeff = [1/3,4/3,1/3]
+
+    for i in range(n-1):
+        net=0
+        for j in range(order):
+            net+=coeff[j+1]*F(x=x_init-step*j,y=y_list[-j-1])
+        net = y_list[-2]+step*net
+        y_list.append(NRy(F=F,dFy=dFy,x_init=x_init+i*step+step,y_init=y_list[-1],intercept=net,coeff=step*coeff[0],epsilon=epsilon,max_itter=max_itter))
+    
+    return y_list
+
+def NRy(F,dFy,x_init,y_init,intercept,coeff=1,epsilon=1e-4,max_itter=50):
+    
+    y_new=y_init
+    
+    while max_itter > 0 :
+        y_old=y_new
+        y_new = y_old - (y_old-coeff*F(x=x_init,y=y_old))/(1-coeff*dFy(x=x_init,y=y_old))
+        max_itter-=1
+        if abs(y_old-y_new) < epsilon : break
+            
+    return y_new
+
+#  Predictor-Corrector methods
+
+
+# Adams Moulton PC method
+
+def  Adams_Bashforth_Moulton_PC(n,F,y_list,limit=[0,1],correct_count=1):
+    # y_list must contain 4 values
+    if len(y_list) < 4:
+        print("Give sufficient number of values in y_list\n")
+        return
+    x_init=limit[0]
+    a=limit[0]
+    b=limit[1]
+    step=(b-a)/n
+
+    coeff_P = [55/24,-59/24,37/24,-9/24]
+    coeff_C = [9/24,19/24,-5/24,1/24]
+
+    for i in range(n):
+
+        ## predictor
+        net = 0
+        for k in range(4):
+            net+=coeff_P[k]*F(x=x_init-step*k,y=y_list[-k-1])
+        y_p = y_list[-1]+step*net
+        print("pred  "+str(i)+" "+str(y_p)+"\n")
+        ## corrector
+
+        for j in range(correct_count):
+            net = coeff_C[0]*F(x=x_init+step,y=y_p)
+            for k in range(3):
+                net+=coeff_C[k+1]*F(x=x_init-step*k,y=y_list[-k-1])
+            y_p=y_list[-1]+step*net
+            print(str(j+1)+" "+str(y_p))
+        
+        y_list.append(y_p)
+        x_init+=step
+        
+    return y_list
 
 
 
+# Milne PC method 
+
+def Milne_PC(n,F,y_list,limit=[0,1],correct_count=1):
+    # y_list must contain 4 values
+    if len(y_list) < 4:
+        print("Give sufficient number of values in y_list\n")
+        return
+    x_init=limit[0]
+    a=limit[0]
+    b=limit[1]
+    step=(b-a)/n
+
+    coeff_P = [8/3,-4/3,8/3]
+    coeff_C = [1/3,4/3,1/3]
+
+    for i in range(n):
+
+        ## predictor
+        net = 0
+        for k in range(3):
+            net+=coeff_P[k]*F(x=x_init-step*k,y=y_list[-k-1])
+        y_p = y_list[-4]+step*net
+        print("pred  "+str(i)+" "+str(y_p)+"\n")
+        ## corrector
+
+        for j in range(correct_count):
+            net = coeff_C[0]*F(x=x_init+step,y=y_p)
+            for k in range(2):
+                net+=coeff_C[k+1]*F(x=x_init-step*k,y=y_list[-k-1])
+            y_p=y_list[-2]+step*net
+            print(str(j+1)+" "+str(y_p))
+        
+        y_list.append(y_p)
+        x_init+=step
+        
+    return y_list
 
 
+# Euler PC method
+
+def Euler_PC(n,F,y_list,limit=[0,1],correct_count=1):
+    # y_list must contain 4 values
+    if len(y_list) < 4:
+        print("Give sufficient number of values in y_list\n")
+        return
+    x_init=limit[0]
+    a=limit[0]
+    b=limit[1]
+    step=(b-a)/n
+
+    for i in range(n):
+
+        ##predictor
+        y_p = y_list[-1]+step*F(x=x_init,y=y_list[-1])
+        print("pred  "+str(i)+" "+str(y_p)+"\n")
+
+        ##corrector
+        for j in range(correct_count):
+            y_p=y_list[-1]+step*F(x=x_init+step,y=y_p)
+            print(str(j+1)+" "+str(y_p))
+        
+        y_list.append(y_p)
+        x_init+=step
+        
+    return y_list
+
+"""Numerical solutions of BVP - Linear BVP, 
+
+finite difference methods, shooting methods, Newtonâs method for system of equations,
+stability, error and convergence analysis, non linear BVP, higher order BVP.
 
 
+Partial Differential Equations: Classification of PDEs, Finite difference
+approximations to partial derivatives, convergence and stability analysis.
+Explicit and Implicit schemes - Crank-Nicolson scheme, tri-diagonal system,
+Laplace equation using standard five point formula and diagonal five point
+formula. ADI scheme, hyperbolic equation, explicit scheme, method of
+characteristics. Solution of one dimensional heat conduction equation by
+Schmidt and Crank Nicolson methods. Solution of wave equation."""
 
-
-
-
-
+def Thomas_algorithm(a,b,c,d):
+    n = len(d)
+    if b[0] == 0 :
+        print("Division by zero encountered at c[0]/=b[0]\n")
+        return
+    c[0]/=b[0]
+    for i in range(n-2):
+        temp = b[i+1]-(a[i]*c[i])
+        if temp == 0 :
+            print("Division by zero encountered at c[i+1]/=b[i+1]-(a[i+1]*c[i]) at i={i} \n")
+            return
+        c[i+1]/=temp
+    d[0]/=b[0]
+    for i in range(n-1):
+        temp = b[i+1]-(a[i]*c[i])
+        if temp == 0 :
+            print("Division by zero encountered at d[i+1]=(d[i+1]-a[i+1]*d[i])/b[i+1]-(a[i+1]*c[i]) at i={i} \n")
+            return
+        d[i+1]=(d[i+1]-a[i]*d[i])/temp
+        
+    x = [float(d[n-1])]
+    for i in range(n-1):
+        x.append(d[n-i-2]-c[n-i-2]*x[-1])
+    return x[::-1]
 
 
 
