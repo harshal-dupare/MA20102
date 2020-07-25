@@ -22,7 +22,7 @@ _________________
 * Classical 3rd Order method
 * Nearly optimal 3rd Order method
 * Kutta Method 4th order method
-* Classical 4rd Order method
+* Classical 4th Order method
 * General Explicit Ranga Kutta method
 * Newton Raphson Method for solving for y for a given x in F(x,y) = 0
 * Implicit RK Method of order 2
@@ -36,7 +36,7 @@ _________________
 * Adams Bashforth Moulton PC method
 * Milne PC method
 * Euler PC method
-* Thomas_algorithm for solving tridiagonal system
+* Thomas Algorithm for solving tridiagonal system
 
 
 ____________
