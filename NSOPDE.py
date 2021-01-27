@@ -890,18 +890,88 @@ def Thomas_algorithm(a,b,c,d):
         x.append(d[n-i-2]-c[n-i-2]*x[-1])
     return x[::-1]
 
+# utility function to print the tridiagonal matrix
+def printm(A,B,C,D):
+    n=len(D)
+    X=np.zeros((n,n+1),dtype=np.float32)
+    for i in range(n):
+        X[i][i]=B[i]
+        X[i][n]=D[i]
+        if i>0 : 
+            X[i][i-1]=A[i-1]
+        if i<n-1:
+            X[i][i+1]=C[i]
+        
+    print(X)
+    return
 
+# to solve general BVP problem
+def BVP(p,q,r,n,a,b,a0,b0,c0,an,bn,cn):
+    """
+    a1,a0,b are the functions with equation
+        y" = p*y'+q*y+r   on [a,b] 
+    with "n" points required between them at uniform interval gap
+    and
+    a0*y(a)+b0*y'(a)=c0
+    an*y(b)+bn*y'(b)=cn
+    
+    returns the value of y on the interval points
+    """
+    deri2_c1={ -1:1    , 0:-2  , 1:1 }
+    deri1_c1={ -1:-0.5 , 0:0   , 1:0.5 }
+    deri1_b2={ -1:1.5  , 0:-2  , 1:0.5}
+    
+    h = (b-a)/n
+    A=[]
+    B=[]
+    C=[]
+    D=[]
+    
+    B0 = {-1:(deri1_c1[-1]*b0),0:(deri1_c1[0]*b0+a0*h),1:(deri1_c1[1]*b0)}
+    Bn = {-1:(deri1_c1[-1]*bn),0:(deri1_c1[0]*bn+an*h),1:(deri1_c1[1]*bn)}
+    
+    #print("B0",B0)
+    #print("Bn",Bn)
+    
+    D0 = {-1:(deri2_c1[-1]-deri1_c1[-1]*h*p(a)),
+           0:(deri2_c1[0]-h*p(a)*deri1_c1[0]-h*h*q(a)),
+           1:(deri2_c1[1]-deri1_c1[1]*h*p(a))}
+    Dn = {-1:(deri2_c1[-1]-deri1_c1[-1]*h*p(b)),
+           0:(deri2_c1[0]-h*p(b)*deri1_c1[0]-h*h*q(b)),
+           1:(deri2_c1[1]-deri1_c1[1]*h*p(b))}
+    
+    #print("D0",D0)
+    #print("Dn",Dn)
+    
+    C0 = {0:D0[-1]*B0[0]-B0[-1]*D0[0],1:D0[-1]*B0[1]-B0[-1]*D0[1],'c':(c0*h*D0[-1]-B0[-1]*h*h*r(a))}
+    Cn = {-1:Dn[1]*Bn[-1]-Bn[1]*Dn[-1],0:Dn[1]*Bn[0]-Bn[1]*Dn[0],'c':(cn*h*Dn[1]-Bn[1]*h*h*r(b))}
+    
+    #print("C0",C0)
+    #print("Cn",Cn)
+    
+    # for x=a
+    B.append(C0[0])
+    C.append(C0[1])
+    D.append(C0['c'])
 
+    for i in range(1,n):
+        x = a + i*h
+        A.append(deri2_c1[-1]-deri1_c1[-1]*h*p(x))
+        B.append(deri2_c1[0]-h*p(x)*deri1_c1[0]-h*h*q(x))
+        C.append(deri2_c1[1]-deri1_c1[1]*h*p(x))
+        D.append(h*h*r(x))
+    
+    # for x=b
+    A.append(Cn[-1])
+    B.append(Cn[0])
+    D.append(Cn['c'])
+    
+    # printm(A,B,C,D)
+    
+    X = Thomas_algorithm(A,B,C,D)
+    dX = dict()
+    for i in range(0,n+1):
+        dX[a+i*h]=X[i]
 
-
-
-
-
-
-
-
-
-
-
-
+    return dX
 
