@@ -37,6 +37,7 @@ _________________
 * Milne PC method
 * Euler PC method
 * Thomas Algorithm for solving tridiagonal system
+* Finite Difference Method to solve general 2nd order BVP
 
 
 ____________
